@@ -1,0 +1,51 @@
+{
+  "token": "REDACTED",
+  "team_id": "REDACTED",
+  "enterprise_id": "REDACTED",
+  "api_app_id": "REDACTED",
+  "event": {
+    "user": "REDACTED",
+    "type": "app_mention",
+    "ts": "1714243696.852069",
+    "client_msg_id": "REDACTED",
+    "text": "<@REDACTED>\nこんにちは",
+    "team": "REDACTED",
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "REDACTED",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "user",
+                "user_id": "REDACTED"
+              },
+              {
+                "type": "text",
+                "text": "\nこんにちは"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "channel": "REDACTED",
+    "event_ts": "1714243696.852069"
+  },
+  "type": "event_callback",
+  "event_id": "REDACTED",
+  "event_time": 1714243696,
+  "authorizations": [
+    {
+      "enterprise_id": "REDACTED",
+      "team_id": "REDACTED",
+      "user_id": "REDACTED",
+      "is_bot": true,
+      "is_enterprise_install": false
+    }
+  ],
+  "is_ext_shared_channel": false,
+  "event_context": "REDACTED"
+}

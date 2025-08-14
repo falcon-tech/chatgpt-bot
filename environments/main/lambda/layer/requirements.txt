@@ -1,0 +1,4 @@
+fastapi==0.99.0
+openai
+slack_sdk
+line-bot-sdk
