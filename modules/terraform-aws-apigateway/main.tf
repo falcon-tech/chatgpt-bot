@@ -14,21 +14,23 @@ resource "aws_iam_role" "main" {
       }
     ]
   })
-  inline_policy {
-    name = "apig-${var.name}-policy"
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [
-        {
-          Action = [
-            "lambda:InvokeFunction"
-          ]
-          Effect   = "Allow"
-          Resource = var.lambda_function_arn
-        }
-      ]
-    })
-  }
+}
+
+resource "aws_iam_role_policy" "main" {
+  name = "apig-${var.name}-policy"
+  role = aws_iam_role.main.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "lambda:InvokeFunction"
+        ]
+        Effect   = "Allow"
+        Resource = var.lambda_function_arn
+      }
+    ]
+  })
 }
 
 resource "aws_api_gateway_rest_api" "main" {

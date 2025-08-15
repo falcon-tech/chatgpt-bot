@@ -1,7 +1,7 @@
 module "dynamodb_table" {
   # Module
   source  = "terraform-aws-modules/dynamodb-table/aws"
-  version = "4.0.1"
+  version = "4.4.0"
   # Table Setting
   name         = "chatgpt-bot-threads"
   hash_key     = "key"
@@ -19,7 +19,7 @@ module "dynamodb_table" {
 module "lambda_layer" {
   # Module
   source  = "terraform-aws-modules/lambda/aws"
-  version = "7.2.6"
+  version = "7.21.1"
   # Layer Setting
   layer_name          = "chatgpt-bot-python"
   description         = null
@@ -32,7 +32,7 @@ module "lambda_layer" {
 module "lambda_function" {
   # Module
   source  = "terraform-aws-modules/lambda/aws"
-  version = "7.2.6"
+  version = "7.21.1"
   # Basic information
   function_name            = "chatgpt-bot"
   description              = null
@@ -79,7 +79,7 @@ module "lambda_function" {
   create_current_version_allowed_triggers = false
   # Environment Variables
   environment_variables = {
-    OPENAI_ASSISTANT_ID       = var.openai_assistant_id
+    OPENAI_MODEL              = "gpt-5"
     OPENAI_API_KEY            = var.openai_api_key
     LINE_USER_ID              = var.line_user_id
     LINE_CHANNEL_ACCESS_TOKEN = var.line_channel_access_token
@@ -87,6 +87,7 @@ module "lambda_function" {
     SLACK_BOT_TOKEN           = var.slack_bot_token
     DB_TABLE_NAME             = module.dynamodb_table.dynamodb_table_id
     THREAD_ID_EXPIRATION_DATE = 30
+    ENV                       = "prod"
   }
   # Asynchronous
   create_async_event_config    = true
@@ -97,11 +98,11 @@ module "lambda_function" {
 module "api_gateway" {
   # Module
   source = "../../modules/terraform-aws-apigateway"
-  # Input
+  # Module argument
   name                = "chatgpt-bot"
   lambda_function_arn = module.lambda_function.lambda_function_arn
   integration_request_parameters = {
-    # Lambdaを非同期実行させる為のRequestHeader。SLACKにAPIGWのエンドポイントを登録する際は、コメントアウトすること
+    # *note:Lambdaを非同期実行させる為のRequestHeader。SLACKにAPIGWのエンドポイントを登録する際は、コメントアウトすること
     "integration.request.header.X-Amz-Invocation-Type" = "'Event'"
   }
 }

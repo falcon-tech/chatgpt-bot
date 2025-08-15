@@ -3,11 +3,6 @@ variable "kms_key_arn" {
   sensitive = true
 }
 
-variable "openai_assistant_id" {
-  type      = string
-  sensitive = true
-}
-
 variable "openai_api_key" {
   type      = string
   sensitive = true
