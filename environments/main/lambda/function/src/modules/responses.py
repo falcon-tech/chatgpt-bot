@@ -46,7 +46,7 @@ def send_message(previous_response_id, message):
             ],
             "input": message,
             "reasoning": {
-                "effort": "medium",
+                "effort": "low",
                 "summary": "auto"
             }
         }
