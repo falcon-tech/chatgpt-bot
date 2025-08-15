@@ -13,6 +13,11 @@ variable "line_user_id" {
   sensitive = true
 }
 
+variable "line_group_id" {
+  type      = string
+  sensitive = true
+}
+
 variable "line_channel_access_token" {
   type      = string
   sensitive = true

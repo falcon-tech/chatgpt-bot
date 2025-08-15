@@ -79,15 +79,17 @@ module "lambda_function" {
   create_current_version_allowed_triggers = false
   # Environment Variables
   environment_variables = {
-    OPENAI_MODEL              = "gpt-5"
-    OPENAI_API_KEY            = var.openai_api_key
-    LINE_USER_ID              = var.line_user_id
-    LINE_CHANNEL_ACCESS_TOKEN = var.line_channel_access_token
-    SLACK_USER_ID             = var.slack_user_id
-    SLACK_BOT_TOKEN           = var.slack_bot_token
-    DB_TABLE_NAME             = module.dynamodb_table.dynamodb_table_id
-    THREAD_ID_EXPIRATION_DATE = 30
-    ENV                       = "prod"
+    OPENAI_MODEL                  = "gpt-5"
+    OPENAI_API_KEY                = var.openai_api_key
+    LINE_USER_ID                  = var.line_user_id
+    LINE_GROUP_ID                 = var.line_group_id
+    LINE_REQUIRE_MENTION_IN_GROUP = true
+    LINE_CHANNEL_ACCESS_TOKEN     = var.line_channel_access_token
+    SLACK_USER_ID                 = var.slack_user_id
+    SLACK_BOT_TOKEN               = var.slack_bot_token
+    DB_TABLE_NAME                 = module.dynamodb_table.dynamodb_table_id
+    THREAD_ID_EXPIRATION_DATE     = 30
+    ENV                           = "prod"
   }
   # Asynchronous
   create_async_event_config    = true
