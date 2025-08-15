@@ -33,9 +33,20 @@ def send_message(previous_response_id, message):
         # API呼び出しのパラメータを設定
         kwargs = {
             "model": os.environ["OPENAI_MODEL"],
+            "tools": [
+                {
+                    "type": "web_search_preview",
+                    "user_location": {
+                        "type": "approximate",
+                        "country": "JP",
+                        "city": "Tokyo",
+                        "timezone": "Asia/Tokyo"
+                    }
+                }
+            ],
             "input": message,
             "reasoning": {
-                "effort": "minimal"
+                "effort": "medium"
             }
         }
         # 前回のレスポンスIDが存在する場合は、引数に追加
