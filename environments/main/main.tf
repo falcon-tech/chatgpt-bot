@@ -72,6 +72,7 @@ module "lambda_function" {
   # Advanced Setting
   cloudwatch_logs_retention_in_days = 7
   memory_size                       = 512
+  snap_start                        = true
   timeout                           = 180
   kms_key_arn                       = var.kms_key_arn
   # Permission
