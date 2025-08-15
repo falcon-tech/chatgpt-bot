@@ -46,7 +46,8 @@ def send_message(previous_response_id, message):
             ],
             "input": message,
             "reasoning": {
-                "effort": "medium"
+                "effort": "medium",
+                "summary": "auto"
             }
         }
         # 前回のレスポンスIDが存在する場合は、引数に追加
@@ -54,6 +55,9 @@ def send_message(previous_response_id, message):
             kwargs["previous_response_id"] = previous_response_id
         # OpenAI Responses APIを呼び出し
         response = openai.responses.create(**kwargs)
+        # 返信テキストと要約テキストを初期化
+        reply_text = ""
+        summary_text = ""
         # レスポンスのoutput配列からtype='message'の要素を探す
         for output in response.output:
             if output.type == 'message':
@@ -63,11 +67,16 @@ def send_message(previous_response_id, message):
                         reply_text = content.text
                         break
                 break
+            if output.type == 'reasoning':
+                for summary in output.summary:
+                    summary_text = summary.text
+                    break
         # レスポンスIDを取得
         response_id = response.id
         # ログ出力
         print("Response id: " + str(response_id))
         print("Response messages: " + reply_text)
+        print("Reasoning summary: " + summary_text)
         print("Successfully sent message to OpenAI")
         # 返信テキストとレスポンスIDを返却
         return reply_text, response_id
