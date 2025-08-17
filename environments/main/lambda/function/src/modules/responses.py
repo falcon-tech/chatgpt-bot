@@ -33,6 +33,9 @@ def send_message(previous_response_id, message):
         # API呼び出しのパラメータを設定
         kwargs = {
             "model": os.environ["OPENAI_MODEL"],
+            "prompt": {
+                "id": os.environ["OPENAI_PROMPT_ID"]
+            },
             "tools": [
                 {
                     "type": "web_search_preview",

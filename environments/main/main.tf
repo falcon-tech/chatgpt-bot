@@ -82,6 +82,7 @@ module "lambda_function" {
   environment_variables = {
     OPENAI_MODEL                  = "gpt-5"
     OPENAI_API_KEY                = var.openai_api_key
+    OPENAI_PROMPT_ID              = "pmpt_68a050ec09548197b80a27f508eb7c720a31f8cf3a964d5d"
     LINE_USER_ID                  = var.line_user_id
     LINE_GROUP_ID                 = var.line_group_id
     LINE_REQUIRE_MENTION_IN_GROUP = true
