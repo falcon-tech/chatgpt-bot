@@ -1,7 +1,7 @@
-variable "kms_key_arn" {
-  type      = string
-  sensitive = true
-}
+# variable "kms_key_arn" {
+#   type      = string
+#   sensitive = true
+# }
 
 variable "openai_api_key" {
   type      = string

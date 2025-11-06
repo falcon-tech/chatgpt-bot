@@ -62,11 +62,11 @@ module "lambda_function" {
           ]
           Resource : module.dynamodb_table.dynamodb_table_arn
         },
-        {
-          Effect : "Allow",
-          Action : ["kms:Decrypt"]
-          Resource : var.kms_key_arn
-        }
+        # {
+        #   Effect : "Allow",
+        #   Action : ["kms:Decrypt"]
+        #   Resource : var.kms_key_arn
+        # }
       ]
   })
   # Advanced Setting
@@ -74,7 +74,7 @@ module "lambda_function" {
   memory_size                       = 512
   snap_start                        = true
   timeout                           = 180
-  kms_key_arn                       = var.kms_key_arn
+  # kms_key_arn                       = var.kms_key_arn
   # Permission
   allowed_triggers                        = {}
   create_current_version_allowed_triggers = false
@@ -92,6 +92,7 @@ module "lambda_function" {
     DB_TABLE_NAME                 = module.dynamodb_table.dynamodb_table_id
     THREAD_ID_EXPIRATION_DATE     = 30
     ENV                           = "prod"
+    ENCRYPTION                    = "false"
   }
   # Asynchronous
   create_async_event_config    = true

@@ -6,15 +6,16 @@ from base64 import b64decode
 from openai import OpenAI
 
 # OpenAI APIキーの設定
-## ローカル実行の場合は環境変数に設定されたAPIキーを使用
-if os.environ["ENV"] == "local":
-    OPENAI_API_KEY = os.environ['OPENAI_API_KEY']
-## 本番実行の場合はKMSを使用して環境変数を復号化したAPIキーを使用
-else:
+## 本番実行かつ暗号化が有効な場合はKMSを使用して環境変数を復号化したAPIキーを使用
+if os.environ.get("ENV") == "prod" and os.environ.get("ENCRYPTION") == "true":
     OPENAI_API_KEY = boto3.client('kms').decrypt(
-        CiphertextBlob=b64decode(os.environ['OPENAI_API_KEY']),
-        EncryptionContext={'LambdaFunctionName': os.environ['AWS_LAMBDA_FUNCTION_NAME']}
+        CiphertextBlob=b64decode(os.environ.get("OPENAI_API_KEY")),
+        EncryptionContext={'LambdaFunctionName': os.environ.get("AWS_LAMBDA_FUNCTION_NAME")}
     )['Plaintext'].decode('utf-8')
+
+## それ以外の場合は環境変数に設定されたAPIキーを使用
+else:
+    OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
 # OpenAIクライアントの作成
 ## ローカル実行の場合はSSL検証を無効化
@@ -32,9 +33,9 @@ def send_message(previous_response_id, message):
     try:
         # API呼び出しのパラメータを設定
         kwargs = {
-            "model": os.environ["OPENAI_MODEL"],
+            "model": os.environ.get("OPENAI_MODEL"),
             "prompt": {
-                "id": os.environ["OPENAI_PROMPT_ID"]
+                "id": os.environ.get("OPENAI_PROMPT_ID")
             },
             "tools": [
                 {

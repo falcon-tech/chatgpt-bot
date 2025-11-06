@@ -10,16 +10,17 @@ from linebot.v3.messaging import (
     TextMessage
 )
 
-# ローカル実行かどうかを判定
-if os.environ["ENV"] == "local":
-    # ローカル実行の場合は環境変数をそのまま使用
-    LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
-else:
-    # 本番実行の場合はKMSを使用して環境変数を復号化
+# LINEチャネルアクセストークンの設定
+## 本番実行かつ暗号化が有効な場合はKMSを使用して環境変数を復号化したトークンを使用
+if os.environ.get("ENV") == "prod" and os.environ.get("ENCRYPTION") == "true":
     LINE_CHANNEL_ACCESS_TOKEN = boto3.client('kms').decrypt(
-        CiphertextBlob=b64decode(os.environ['LINE_CHANNEL_ACCESS_TOKEN']),
-        EncryptionContext={'LambdaFunctionName': os.environ['AWS_LAMBDA_FUNCTION_NAME']}
+        CiphertextBlob=b64decode(os.environ.get("LINE_CHANNEL_ACCESS_TOKEN")),
+        EncryptionContext={'LambdaFunctionName': os.environ.get("AWS_LAMBDA_FUNCTION_NAME")}
     )['Plaintext'].decode('utf-8')
+
+## それ以外の場合は環境変数に設定されたトークンを使用
+else:
+    LINE_CHANNEL_ACCESS_TOKEN = os.environ.get("LINE_CHANNEL_ACCESS_TOKEN")
 
 # LINE Bot APIの設定を初期化
 configuration = Configuration(access_token=LINE_CHANNEL_ACCESS_TOKEN)
