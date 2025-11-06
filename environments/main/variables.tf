@@ -8,6 +8,11 @@ variable "openai_api_key" {
   sensitive = true
 }
 
+variable "openai_prompt_id" {
+  type      = string
+  sensitive = true
+}
+
 variable "line_user_id" {
   type      = string
   sensitive = true
